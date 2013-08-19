@@ -1,0 +1,64 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/google/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>ID Token Validator</h2>
+    <div>
+        <form class="form-horizontal" method="POST" action="/google/id_token">
+        <fieldset>
+        <label>Input ID Token for Google</label>
+        <input type="text" class="span8" id="id_token" name="id_token" placeholder="ID Token string (eyJ...)" value="[% id_token %]">
+        <button type="submit" class="btn btn-primary"> Validate </button>
+        </fieldset>
+        </form >
+    </div>
+    [% IF result %]
+    <h3>Header and Signature</h3>
+    <div>
+        <fieldset>
+        <label>Signature Status</label>
+        [% IF result.signature_status %]
+        <pre>valid</pre>
+        [% ELSE %]
+        <pre>invalid</pre>
+        [% END %]
+        [% IF result.header_content %]
+        <label>Header Content</label>
+        <pre>[% result.header_content %]</pre>
+        [% END %]
+        [% IF result.payload_content %]
+        <label>Payload Content</label>
+        <pre>[% result.payload_content %]</pre>
+        [% END %]
+        </fieldset>
+    </div>
+    [% END %]
+    [% IF result.payload_detail %]
+    <h3>Payload</h3>
+    <div>
+        <fieldset>
+        <label>Payload Status</label>
+        [% IF result.payload_detail.status %]
+        <pre>valid</pre>
+        [% ELSE %]
+        <pre>invalid</pre>
+        <pre>[% result.payload_detail.message %]</pre>
+        [% END %]
+        [% IF result.payload_detail.userinfo %]
+        <label>User Info</label>
+        <pre>[% result.payload_detail.userinfo %]</pre>
+        [% END %]
+        </fieldset>
+    </div>
+    [% END %]
+    <div>
+        <p><a href="/">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

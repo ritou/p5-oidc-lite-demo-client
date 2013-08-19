@@ -1,0 +1,84 @@
+{
+   "abstract" : "OpenID Connect Demo Client using OIDC::Lite",
+   "author" : [
+      "Ryo Ito <ritou.06@gmail.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Minilla/v0.5.6, CPAN::Meta::Converter version 2.132140",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "OIDC-Lite-Demo-Client",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples",
+         "author"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "CPAN::Meta" : "0",
+            "CPAN::Meta::Prereqs" : "0",
+            "Module::Build" : "0.38",
+            "Module::CPANfile" : "0.9010"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion" : "0.10108",
+            "Test::Pod" : "1.41",
+            "Test::Spellunker" : "v0.2.7"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Amon2" : "3.87",
+            "Amon2::DBI" : "0.30",
+            "Crypt::OpenSSL::CA" : "0",
+            "Crypt::OpenSSL::Random" : "0",
+            "DBD::SQLite" : "1.33",
+            "HTML::FillInForm::Lite" : "1.11",
+            "JSON::XS" : "0",
+            "Module::Functions" : "2",
+            "OAuth::Lite2" : "0.05",
+            "OIDC::Lite" : "0.03",
+            "Plack::Middleware::ReverseProxy" : "0.09",
+            "Plack::Middleware::Session" : "0",
+            "Plack::Session" : "0.14",
+            "Teng" : "0.19",
+            "Test::WWW::Mechanize::PSGI" : "0",
+            "Text::Xslate" : "1.6001",
+            "Time::Piece" : "1.20",
+            "perl" : "5.008001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.98"
+         }
+      }
+   },
+   "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/ritou/p5-oidc-lite-demo-client/issues"
+      },
+      "homepage" : "https://github.com/ritou/p5-oidc-lite-demo-client",
+      "repository" : {
+         "url" : "https://github.com/ritou/p5-oidc-lite-demo-client.git",
+         "web" : "https://github.com/ritou/p5-oidc-lite-demo-client"
+      }
+   },
+   "version" : "0.01"
+}

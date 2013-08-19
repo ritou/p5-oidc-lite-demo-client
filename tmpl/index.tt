@@ -1,0 +1,18 @@
+[% WRAPPER 'include/layout.tt' %]
+
+<h1>OIDC::Lite::Demo::Client</h1>
+
+<hr />
+
+<div>
+    <h2>Select OpenID Provider</h2>
+    <div>
+        <ul>
+        <li><a href="/google">Google</a></li>
+        </ul>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

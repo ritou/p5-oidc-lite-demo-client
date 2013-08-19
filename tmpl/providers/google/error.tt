@@ -1,0 +1,23 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/google/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Error</h2>
+    <div>
+        <p>[% message %]</p>
+        [% IF code %]
+            <pre>Status Code : [% code %]</pre>
+            <pre>content : [% content %]</pre>
+        [% END %]
+    </div>
+    <div>
+        <p><a href="/google">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

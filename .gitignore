@@ -2,6 +2,7 @@ Makefile
 /inc/
 MANIFEST
 *.bak
+*.swp
 *.old
 nytprof.out
 nytprof/
@@ -19,6 +20,7 @@ MYMETA.yml
 /.build
 /_build_params
 /config/development.pl.*
+cpanfile.snapshot
 !Build/
 !META.json
 !LICENSE
