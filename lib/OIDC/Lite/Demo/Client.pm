@@ -71,6 +71,7 @@ OpenID Connect Demo Client using OIDC::Lite
     $ ./Build test
     
     # 2. Modify your app's configuration
+    # The case of Google, 
     # Visit to https://code.google.com/apis/console/ and register your app.
     # Replace client_id and client_secret, redirect_uri with sample configuration.
     $ vim config/development.pl
@@ -90,6 +91,7 @@ If you are able to use carton, following command are needed.
     $ carton exec ./Build test
     
     # 2. Modify your app's configuration
+    # The case of Google, 
     # Visit to https://code.google.com/apis/console/ and register your app.
     # Replace client_id and client_secret, redirect_uri with sample configuration.
     $ vim config/development.pl

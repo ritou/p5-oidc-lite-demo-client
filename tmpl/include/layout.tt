@@ -45,6 +45,7 @@
             [% content %]
         </div>
         <footer class="footer">
+            Github repository : <a href="https://github.com/ritou/p5-oidc-lite-demo-client">ritou/p5-oidc-lite-demo-client</a>
             Copyright &copy; 2013 <a href="http://github.com/ritou">Ryo Ito</a>.
             Powered by <a href="http://amon.64p.org/">Amon2</a>
         </footer>

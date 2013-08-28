@@ -8,7 +8,8 @@
     <h2>Success</h2>
     <h3>Access Token Response</h3>
     <div>
-        <pre>content : [% info.token_response %]</pre>
+        <pre>Request Body : [% info.token_request %]</pre>
+        <pre>Response Content : [% info.token_response %]</pre>
     </div>
     <h3>ID Token Detail</h3>
     <div>
@@ -22,7 +23,9 @@
     </div>
     <h3>Userinfo Response</h3>
     <div>
-        <pre>content : [% info.userinfo_response %]</pre>
+        <pre>Endpoint : [% info.userinfo_endpoint %]</pre>
+        <pre>Request (Authorization Header) : [% info.userinfo_request_header %]</pre>
+        <pre>Content : [% info.userinfo_response %]</pre>
     </div>
     <div>
         <p><a href="/google">Back</a></p>

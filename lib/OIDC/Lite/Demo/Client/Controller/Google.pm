@@ -15,7 +15,7 @@ my $GOOGLE_CERTS_URL = q{https://www.googleapis.com/oauth2/v1/certs};
 my $config = {
     'authorization_endpoint' => 'https://accounts.google.com/o/oauth2/auth',
     'token_endpoint' => 'https://accounts.google.com/o/oauth2/token',
-    'userinfo_endpoint' => 'https://www.googleapis.com/oauth2/v1/userinfo',
+    'userinfo_endpoint' => 'https://www.googleapis.com/oauth2/v3/userinfo',
 };
 
 sub default {
@@ -97,14 +97,19 @@ sub callback {
         redirect_uri => $google_config->{'redirect_uri'},
     );
     my $res = $client->last_response;
+    my $request_body = $res->request->content;
+    $request_body =~ s/client_secret=[^\&]+/client_secret=(hidden)/;
+
     unless ($token) {
         return $c->render('providers/google/error.tt' => {
             message => q{Failed to get access token response},
             code => $res->code,
             content => $res->content,
+            request => $request_body,
         });
     }
     my $info = {
+        token_request => $request_body,
         token_response => $res->content,
     };
 
@@ -125,6 +130,8 @@ sub callback {
             content => $userinfo_res->content,
         });
     }
+    $info->{'userinfo_endpoint'} = $config->{'userinfo_endpoint'};
+    $info->{'userinfo_request_header'} = $userinfo_res->request->header('Authorization');
     $info->{'userinfo_response'} = $userinfo_res->content;
 
     # display result

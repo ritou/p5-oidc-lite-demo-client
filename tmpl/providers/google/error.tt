@@ -9,8 +9,9 @@
     <div>
         <p>[% message %]</p>
         [% IF code %]
+            <pre>Request Body : [% request %]</pre>
             <pre>Status Code : [% code %]</pre>
-            <pre>content : [% content %]</pre>
+            <pre>Response Content : [% content %]</pre>
         [% END %]
     </div>
     <div>
