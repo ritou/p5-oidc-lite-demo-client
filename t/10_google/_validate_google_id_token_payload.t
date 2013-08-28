@@ -28,6 +28,7 @@ _VALIDATE_PAYLOAD: {
     ok( $result, q{invalid iss} );
     ok( !$result->{status}, q{status is invalid} );
     is( $result->{message}, q{iss is not Google}, q{iss is not Google} );
+    is( $result->{iss}, $payload->{iss}, q{iss is set} );
 
     $payload = {
        iss => q{accounts.google.com}, 
@@ -37,6 +38,7 @@ _VALIDATE_PAYLOAD: {
     ok( $result, q{no iat} );
     ok( !$result->{status}, q{status is invalid} );
     is( $result->{message}, q{iat does not exist}, q{iat does not exist} );
+    ok( !$result->{iat}, q{iat is not set} );
 
     $payload = {
        iss => q{accounts.google.com}, 
@@ -47,6 +49,7 @@ _VALIDATE_PAYLOAD: {
     ok( $result, q{iat is future} );
     ok( !$result->{status}, q{status is invalid} );
     is( $result->{message}, q{iat is greater than current timestamp}, q{iat is greater than current timestamp} );
+    is( $result->{iat}, $payload->{iat}, q{iat is set} );
 
     $payload = {
        iss => q{accounts.google.com}, 
@@ -57,6 +60,7 @@ _VALIDATE_PAYLOAD: {
     ok( $result, q{no exp} );
     ok( !$result->{status}, q{status is invalid} );
     is( $result->{message}, q{exp does not exist}, q{exp does not exist} );
+    ok( !$result->{exp}, q{exp is not set} );
 
     $payload = {
        iss => q{accounts.google.com}, 
@@ -68,6 +72,7 @@ _VALIDATE_PAYLOAD: {
     ok( $result, q{expired} );
     ok( !$result->{status}, q{status is invalid} );
     is( $result->{message}, q{exp is not greater than current timestamp}, q{exp is not greater than current timestamp} );
+    is( $result->{exp}, $payload->{exp}, q{exp is set} );
 
     $payload = {
        iss => q{accounts.google.com}, 
@@ -78,7 +83,9 @@ _VALIDATE_PAYLOAD: {
         OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token_payload( $payload, $config );
     ok( $result, q{no aud and azp} );
     ok( !$result->{status}, q{status is invalid} );
-    is( $result->{message}, q{aud and azp do not exist}, q{aud and azp do not exist} );
+    is( $result->{message}, q{aud does not exist}, q{aud does not exist} );
+    ok( !$result->{aud}, q{aud is not set} );
+    is( $result->{client_id}, $config->{client_id}, q{client_id is set} );
 
     $payload = {
        iss => q{accounts.google.com}, 
@@ -90,32 +97,9 @@ _VALIDATE_PAYLOAD: {
         OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token_payload( $payload, $config );
     ok( $result, q{invalid aud} );
     ok( !$result->{status}, q{status is invalid} );
-    is( $result->{message}, q{aud and azp do not match with this app's client_id}, q{aud and azp do not match with this app's client_id} );
-
-    $payload = {
-       iss => q{accounts.google.com}, 
-       iat => (time() - 100),
-       exp => (time() + 100),
-       aud => q{aab},
-       azp => q{aab},
-    };
-    $result = 
-        OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token_payload( $payload, $config );
-    ok( $result, q{invalid aud and azp} );
-    ok( !$result->{status}, q{status is invalid} );
-    is( $result->{message}, q{aud and azp do not match with this app's client_id}, q{aud and azp do not match with this app's client_id} );
-
-    $payload = {
-       iss => q{accounts.google.com}, 
-       iat => (time() - 100),
-       exp => (time() + 100),
-       azp => q{aab},
-    };
-    $result = 
-        OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token_payload( $payload, $config );
-    ok( $result, q{invalid azp} );
-    ok( !$result->{status}, q{status is invalid} );
-    is( $result->{message}, q{aud and azp do not match with this app's client_id}, q{aud and azp do not match with this app's client_id} );
+    is( $result->{message}, q{aud does not match with this app's client_id}, q{aud does not match with this app's client_id} );
+    is( $result->{aud}, $payload->{aud}, q{aud is set} );
+    is( $result->{client_id}, $config->{client_id}, q{client_id is set} );
 
     $payload = {
        iss => q{accounts.google.com}, 
@@ -128,31 +112,8 @@ _VALIDATE_PAYLOAD: {
     ok( $result, q{valid aud} );
     ok( !$result->{status}, q{status is invalid} );
     is( $result->{message}, q{sub, email and email_verified do not exist}, q{message} );
-
-    $payload = {
-       iss => q{accounts.google.com}, 
-       iat => (time() - 100),
-       exp => (time() + 100),
-       azp => q{aaa},
-    };
-    $result = 
-        OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token_payload( $payload, $config );
-    ok( $result, q{valid azp} );
-    ok( !$result->{status}, q{status is invalid} );
-    is( $result->{message}, q{sub, email and email_verified do not exist}, q{message} );
-
-    $payload = {
-       iss => q{accounts.google.com}, 
-       iat => (time() - 100),
-       exp => (time() + 100),
-       aud => q{aaa},
-       azp => q{aaa},
-    };
-    $result = 
-        OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token_payload( $payload, $config );
-    ok( $result, q{valid aud and azp} );
-    ok( !$result->{status}, q{status is invalid} );
-    is( $result->{message}, q{sub, email and email_verified do not exist}, q{message} );
+    is( $result->{aud}, $payload->{aud}, q{aud is set} );
+    is( $result->{client_id}, $config->{client_id}, q{client_id is set} );
 
     $payload = {
        iss => q{accounts.google.com}, 

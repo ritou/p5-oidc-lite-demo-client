@@ -95,49 +95,50 @@ _VALIDATE_GOOGLE_ID_TOKEN: {
     my $id_token = q{This is not JWS string};
     my $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
+    is( $result->{id_token_string}, q{id_token_string is set});
     ok( !$result->{signature_status}, q{signature status is invalid});
-    ok( !$result->{payload_content}, q{payload});
-    ok( !$result->{payload}, q{payload});
+    ok( !$result->{encoded_header}, q{encoded_header is not set});
 
     # no alg
     $id_token = q{eyJmb28iOiJiYXIifQ.eyJmb28iOiJiYXIifQ.invalid_signature};
     $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
-    ok( !$result->{payload_content}, q{payload});
-    ok( !$result->{payload}, q{payload});
+    is( $result->{encoded_header}, q{eyJmb28iOiJiYXIifQ}, q{encoded_header is set});
+    is( $result->{encoded_payload}, q{eyJmb28iOiJiYXIifQ}, q{encoded_payload is set});
+    is( $result->{encoded_signature}, q{invalid_signature}, q{encoded_signature is set});
+    is( $result->{signing_input}, q{eyJmb28iOiJiYXIifQ.eyJmb28iOiJiYXIifQ}, q{signing_input is set});
+    ok( !$result->{header_content}, q{header is not set});
 
     # alg is invalid
     $id_token = q{eyJhbGciOiJIUzI1NiJ9.eyJmb28iOiJiYXIifQ.invalid_signature};
     $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
-    ok( !$result->{payload_content}, q{payload});
-    ok( !$result->{payload}, q{payload});
+    ok( !$result->{header_content}, q{header is not set});
 
     # no kid
     $id_token = q{eyJhbGciOiJSUzI1NiJ9.eyJmb28iOiJiYXIifQ.invalid_signature};
     $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
-    ok( !$result->{payload_content}, q{payload});
-    ok( !$result->{payload}, q{payload});
+    ok( !$result->{header_content}, q{header is not set});
 
     # invalid kid
     $id_token = q{eyJhbGciOiJSUzI1NiIsImtpZCI6ImludmFsaWQifQ.eyJmb28iOiJiYXIifQ.invalid_signature};
     $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
-    ok( !$result->{payload_content}, q{payload});
-    ok( !$result->{payload}, q{payload});
+    ok( $result->{header_content}, q{header is set});
+    ok( !$result->{pubkey}, q{pubkey is not set});
 
     # invalid signature
     $id_token = q{eyJhbGciOiJSUzI1NiIsImtpZCI6IjU0MDQxOTZlMmQzOGNjYTA2MWJjNTFhNTVhMDRiYzI0YzE2MTIxODQifQ.eyJmb28iOiJiYXIifQ.invalid_signature};
     $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
-    ok( !$result->{payload_content}, q{payload});
-    ok( !$result->{payload}, q{payload});
+    ok( $result->{header_content}, q{header is set});
+    ok( $result->{pubkey}, q{pubkey is set});
 
     # valid signature
     $id_token = q{eyJhbGciOiJSUzI1NiIsImtpZCI6IjA3ZjZmZTQ0ZTMzMWQxNjFlMjM4YzA2ZmY3MjJiY2EyYzc5YjgyYjIifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXRfaGFzaCI6IjlsYnRlUlpoWmppVjQ0SU45Q3Y0eFEiLCJhdWQiOiIxMDU4NDIxMzE0OTY2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE0MTgxMzA4NzI1NzMwOTg1MjM3IiwiZW1haWwiOiJyaXRvdS4wNkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJhenAiOiIxMDU4NDIxMzE0OTY2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiaWF0IjoxMzc3Mjc2OTIzLCJleHAiOjEzNzcyODA4MjN9.VagTki3Ap29EDgrC38cmGtZeoZdPJjPH4f_475Nd2FVa84HQDkSrO4-3r-2sxco_Z8DWi_i-AlHLHC01JTmOg69inwAWQ2usPV9gkcNLt5PMKKc3TkfB5WM6R5lNz-H6NHVldVkV1GHKTBFoFs4lwyE83ko41EHdHKxmgj9L5cM};

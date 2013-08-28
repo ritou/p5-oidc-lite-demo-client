@@ -171,12 +171,17 @@ sub _validate_google_id_token {
     my ($self, $id_token_string) = @_;
 
     my $result = {
+        id_token_string => $id_token_string,
         signature_status => 0,
     };
 
     # load IDToken Object
-    my $id_token = OIDC::Lite::Model::IDToken->load( $id_token_string );
+    my $id_token = OIDC::Lite::Model::IDToken->load( $result->{id_token_string} );
     if ( $id_token ) {
+
+        my $encoded = [split(/\./, $result->{id_token_string})];
+        ($result->{encoded_header}, $result->{encoded_payload}, $result->{encodded_signature}) = @$encoded;
+        $result->{signing_input} = $result->{encoded_header}.'.'.$result->{encoded_payload};
 
         # Google's ID Token has kid param in header.
         return $result 
@@ -188,6 +193,7 @@ sub _validate_google_id_token {
         # fetch pubkey and verify signature
         my $key = $self->_get_google_pub_key( $id_token->header->{kid} );
         return $result unless $key;
+        $result->{pubkey} = $key;
         $id_token->key($key);
         return $result unless $id_token->verify;
 
@@ -229,6 +235,7 @@ sub _validate_google_id_token_payload {
     };
 
     # iss
+    $detail->{iss} = $payload->{iss};
     unless ( $payload->{iss} ) {
         $detail->{message} = q{iss does not exist};
         return $detail;
@@ -239,6 +246,8 @@ sub _validate_google_id_token_payload {
     }
 
     # iat
+    $detail->{current} = time();
+    $detail->{iat} = $payload->{iat};
     unless ( $payload->{iat} ) {
         $detail->{message} = q{iat does not exist};
         return $detail;
@@ -250,6 +259,7 @@ sub _validate_google_id_token_payload {
     }
 
     # exp
+    $detail->{exp} = $payload->{exp};
     unless ( $payload->{exp} ) {
         $detail->{message} = q{exp does not exist};
         return $detail;
@@ -259,14 +269,15 @@ sub _validate_google_id_token_payload {
         return $detail;
     }
 
-    # aud
+    # aud anz azp
+    $detail->{aud} = $payload->{aud};
+    $detail->{client_id} = $config->{client_id};
     unless ( $payload->{aud} || $payload->{azp} ) {
-        $detail->{message} = q{aud and azp do not exist};
+        $detail->{message} = q{aud does not exist};
         return $detail;
     }
-    unless ( $payload->{aud} eq $config->{'client_id'} ||
-             $payload->{azp} eq $config->{'client_id'} ) {
-        $detail->{message} = q{aud and azp do not match with this app's client_id};
+    unless ( $payload->{aud} eq $config->{client_id} ) {
+        $detail->{message} = q{aud does not match with this app's client_id};
         return $detail;
     }
 
