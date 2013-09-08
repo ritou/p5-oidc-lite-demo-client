@@ -1,0 +1,21 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/sample/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Contents</h2>
+    <div>
+        <ul>
+        <li><a href="/sample/authorize">Try Authorization Flow</a></li>
+        </ul>
+    </div>
+    <div>
+        <p><a href="/">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

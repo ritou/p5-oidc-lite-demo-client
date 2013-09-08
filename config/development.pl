@@ -16,5 +16,11 @@ my $dbpath = File::Spec->catfile($basedir, 'db', 'oidc_lite_demo_client_developm
             'redirect_uri' => q{http://localhost:5000/google/callback},
             'scope' => q{openid email profile},
         },
+        'Sample' => {
+            'client_id' => q{sample_client_id},
+            'client_secret' => q{sample_client_secret},
+            'redirect_uri' => q{http://localhost:5000/sample/callback},
+            'scope' => q{openid email profile phone address},
+        },
     },
 };

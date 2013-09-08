@@ -9,6 +9,7 @@
     <div>
         <ul>
         <li><a href="/google">Google</a></li>
+        <li><a href="/sample">OIDC::Lite::Demo::Server</a></li>
         </ul>
     </div>
 </div>

@@ -1,4 +1,4 @@
-package OIDC::Lite::Demo::Client::Controller::Google;
+package OIDC::Lite::Demo::Client::Web::C::Google;
 
 use strict;
 use warnings;
@@ -7,7 +7,7 @@ use utf8;
 use OIDC::Lite::Demo::Client::Session;
 use OIDC::Lite::Client::WebServer;
 use OIDC::Lite::Model::IDToken;
-use JSON::XS qw/encode_json decode_json/;
+use JSON qw/encode_json decode_json/;
 use Crypt::OpenSSL::CA;
 
 my $GOOGLE_CERTS_URL = q{https://www.googleapis.com/oauth2/v1/certs};
@@ -187,7 +187,7 @@ sub _validate_google_id_token {
     if ( $id_token ) {
 
         my $encoded = [split(/\./, $result->{id_token_string})];
-        ($result->{encoded_header}, $result->{encoded_payload}, $result->{encodded_signature}) = @$encoded;
+        ($result->{encoded_header}, $result->{encoded_payload}, $result->{encoded_signature}) = @$encoded;
         $result->{signing_input} = $result->{encoded_header}.'.'.$result->{encoded_payload};
 
         # Google's ID Token has kid param in header.

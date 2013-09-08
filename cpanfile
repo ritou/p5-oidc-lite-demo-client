@@ -3,7 +3,7 @@ requires 'Text::Xslate', '1.6001';
 requires 'Amon2::DBI'                     , '0.30';
 requires 'DBD::SQLite'                    , '1.33';
 requires 'HTML::FillInForm::Lite'         , '1.11';
-requires 'JSON::XS'                       , '0';
+requires 'JSON'                           , '0';
 requires 'Module::Functions'              , '2';
 requires 'Plack::Middleware::ReverseProxy', '0.09';
 requires 'Plack::Middleware::Session'     , '0';

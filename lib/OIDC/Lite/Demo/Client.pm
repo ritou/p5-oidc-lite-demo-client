@@ -62,33 +62,15 @@ OpenID Connect Demo Client using OIDC::Lite
 
 =head1 SYNOPSIS
 
-    # 0. obtain src and carton setup
-    $ git clone https://github.com/ritou/p5-oidc-lite-demo-client.git
-    $ cd p5-oidc-lite-demo-client
-    
-    # 1. Build and test
-    $ perl Build.pl
-    $ ./Build test
-    
-    # 2. Modify your app's configuration
-    # The case of Google, 
-    # Visit to https://code.google.com/apis/console/ and register your app.
-    # Replace client_id and client_secret, redirect_uri with sample configuration.
-    $ vim config/development.pl
-    
-    # 3. Run your demo client
-    $ plackup -r
-
-If you are able to use carton, following command are needed.
+For setup, please run the following command.
 
     # 0. obtain src and carton setup
     $ git clone https://github.com/ritou/p5-oidc-lite-demo-client.git
     $ cd p5-oidc-lite-demo-client
     $ carton install
     
-    # 1. Build and test
-    $ carton exec perl Build.pl
-    $ carton exec ./Build test
+    # 1. test
+    $ carton exec -- prove
     
     # 2. Modify your app's configuration
     # The case of Google, 
@@ -97,9 +79,11 @@ If you are able to use carton, following command are needed.
     $ vim config/development.pl
     
     # 3. Run your demo client
-    $ carton exec plackup -r
+    $ carton exec -- plackup -r
 
 When plack is launched, try to access http://localhost:5000/
+If OIDC::Lite::Demo::Server is installed and run server, you are able to use 
+sample client at http://localhost:5000/sample
 
 =head1 AUTHOR
 

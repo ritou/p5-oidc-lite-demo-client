@@ -33,6 +33,7 @@ builder {
             }
         ),
         state => Plack::Session::State::Cookie->new(
+            session_key => q{oidc_lite_demo_client},
             httponly => 1,
         );
     OIDC::Lite::Demo::Client::Web->to_app();

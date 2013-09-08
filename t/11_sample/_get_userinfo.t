@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::MockObject;
-use OIDC::Lite::Demo::Client::Web::C::Google;
+use OIDC::Lite::Demo::Client::Web::C::Sample;
 use JSON qw/encode_json/;
 
 Test::MockObject->fake_module(
@@ -19,7 +19,7 @@ Test::MockObject->fake_module(
 _GET_USERINFO: {
     my $access_token = q{abcdefg};
     my $res = 
-        OIDC::Lite::Demo::Client::Web::C::Google->_get_userinfo( $access_token );
+        OIDC::Lite::Demo::Client::Web::C::Sample->_get_userinfo( $access_token );
     is( $res->content, "{\"header\":\"Bearer abcdefg\"}", q{access_token is set to request})
 };
 

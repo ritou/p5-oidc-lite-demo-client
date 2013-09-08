@@ -4,7 +4,7 @@ use utf8;
 use Test::More;
 use Test::MockObject;
 use Plack::Session;
-use OIDC::Lite::Demo::Client::Web::C::Google;
+use OIDC::Lite::Demo::Client::Web::C::Sample;
 
 _AUTHORIZE: {
     Test::MockObject->fake_module(
@@ -19,11 +19,11 @@ _AUTHORIZE: {
         'config' => sub {
             return {
                 'Credentials' => {
-                    'Google' => {
+                    'Sample' => {
                         'client_id' => q{aaa},
                         'client_secret' => q{bbb},
-                        'redirect_uri' => q{http://localhost:5000/google/callback},
-                        'scope' => q{openid email profile},
+                        'redirect_uri' => q{http://localhost:5000/sample/callback},
+                        'scope' => q{openid email profile phone address},
                     },
                 },
             };
@@ -44,13 +44,12 @@ _AUTHORIZE: {
     );
 
     my $c = OIDC::Lite::Demo::Client->new();
-    my $res = OIDC::Lite::Demo::Client::Web::C::Google->authorize($c);
-    like ($res, qr/\Aredirect : https:\/\/accounts\.google\.com\/o\/oauth2\/auth/);
+    my $res = OIDC::Lite::Demo::Client::Web::C::Sample->authorize($c);
+    like ($res, qr/\Aredirect : http:\/\/localhost:5001\/authorize/);
     like ($res, qr/client_id=aaa/);
     like ($res, qr/response_type=code/);
-    like ($res, qr/redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fgoogle%2Fcallback/);
-    like ($res, qr/access_type=offline/);
-    like ($res, qr/scope=openid\+email\+profile/);
+    like ($res, qr/redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fsample%2Fcallback/);
+    like ($res, qr/scope=openid\+email\+profile\+phone\+address/);
     like ($res, qr/state=state_string/);
 };
 

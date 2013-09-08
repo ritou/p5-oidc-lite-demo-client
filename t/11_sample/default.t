@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::MockObject;
-use OIDC::Lite::Demo::Client::Web::C::Google;
+use OIDC::Lite::Demo::Client::Web::C::Sample;
 
 _DEFAULT: {
     Test::MockObject->fake_module(
@@ -16,8 +16,8 @@ _DEFAULT: {
     );
 
     my $c = OIDC::Lite::Demo::Client->new();
-    my $res = OIDC::Lite::Demo::Client::Web::C::Google->default($c);
-    is($res, q{render : providers/google/top.tt});
+    my $res = OIDC::Lite::Demo::Client::Web::C::Sample->default($c);
+    is($res, q{render : providers/sample/top.tt});
 };
 
 done_testing;

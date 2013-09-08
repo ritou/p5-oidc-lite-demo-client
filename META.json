@@ -49,7 +49,7 @@
             "Crypt::OpenSSL::Random" : "0",
             "DBD::SQLite" : "1.33",
             "HTML::FillInForm::Lite" : "1.11",
-            "JSON::XS" : "0",
+            "JSON" : "0",
             "Module::Functions" : "2",
             "OAuth::Lite2" : "0.05",
             "OIDC::Lite" : "0.03",

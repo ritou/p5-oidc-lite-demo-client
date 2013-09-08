@@ -3,8 +3,8 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::MockObject;
-use OIDC::Lite::Demo::Client::Controller::Google;
-use JSON::XS qw/encode_json/;
+use OIDC::Lite::Demo::Client::Web::C::Google;
+use JSON qw/encode_json/;
 
 my $content = {
     "5404196e2d38cca061bc51a55a04bc24c1612184"=> "-----BEGIN CERTIFICATE-----
@@ -49,7 +49,7 @@ _GET_GOOGLE_PUB_KEY: {
         },
     );
     my $pub = 
-        OIDC::Lite::Demo::Client::Controller::Google->_get_google_pub_key("dummy");
+        OIDC::Lite::Demo::Client::Web::C::Google->_get_google_pub_key("dummy");
     ok( !$pub, q{HTTP status code is not ok});
 
     Test::MockObject->fake_module(
@@ -60,7 +60,7 @@ _GET_GOOGLE_PUB_KEY: {
             return HTTP::Response->new(200, '', undef, $content_is_not_json);
         },
     );
-    $pub = OIDC::Lite::Demo::Client::Controller::Google->_get_google_pub_key("dummy");
+    $pub = OIDC::Lite::Demo::Client::Web::C::Google->_get_google_pub_key("dummy");
     ok( !$pub, q{content is not json});
 
     Test::MockObject->fake_module(
@@ -71,10 +71,10 @@ _GET_GOOGLE_PUB_KEY: {
             my $res = HTTP::Response->new(200, '', undef, encode_json($content));
         },
     );
-    $pub = OIDC::Lite::Demo::Client::Controller::Google->_get_google_pub_key("invalid_key");
+    $pub = OIDC::Lite::Demo::Client::Web::C::Google->_get_google_pub_key("invalid_key");
     ok( !$pub, q{pubkey is not PEM});
 
-    $pub = OIDC::Lite::Demo::Client::Controller::Google->_get_google_pub_key("5404196e2d38cca061bc51a55a04bc24c1612184");
+    $pub = OIDC::Lite::Demo::Client::Web::C::Google->_get_google_pub_key("5404196e2d38cca061bc51a55a04bc24c1612184");
     ok( $pub, q{pubkey returned});
     use Data::Dumper;
     like( $pub, qr/-----BEGIN PUBLIC KEY-----/, q{-----BEGIN PUBLIC KEY-----});
@@ -93,15 +93,15 @@ _VALIDATE_GOOGLE_ID_TOKEN: {
 
     # not JWS
     my $id_token = q{This is not JWS string};
-    my $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
+    my $result = OIDC::Lite::Demo::Client::Web::C::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
-    is( $result->{id_token_string}, q{id_token_string is set});
+    is( $result->{id_token_string}, $id_token, q{id_token_string is set});
     ok( !$result->{signature_status}, q{signature status is invalid});
     ok( !$result->{encoded_header}, q{encoded_header is not set});
 
     # no alg
     $id_token = q{eyJmb28iOiJiYXIifQ.eyJmb28iOiJiYXIifQ.invalid_signature};
-    $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
+    $result = OIDC::Lite::Demo::Client::Web::C::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
     is( $result->{encoded_header}, q{eyJmb28iOiJiYXIifQ}, q{encoded_header is set});
@@ -112,21 +112,21 @@ _VALIDATE_GOOGLE_ID_TOKEN: {
 
     # alg is invalid
     $id_token = q{eyJhbGciOiJIUzI1NiJ9.eyJmb28iOiJiYXIifQ.invalid_signature};
-    $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
+    $result = OIDC::Lite::Demo::Client::Web::C::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
     ok( !$result->{header_content}, q{header is not set});
 
     # no kid
     $id_token = q{eyJhbGciOiJSUzI1NiJ9.eyJmb28iOiJiYXIifQ.invalid_signature};
-    $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
+    $result = OIDC::Lite::Demo::Client::Web::C::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
     ok( !$result->{header_content}, q{header is not set});
 
     # invalid kid
     $id_token = q{eyJhbGciOiJSUzI1NiIsImtpZCI6ImludmFsaWQifQ.eyJmb28iOiJiYXIifQ.invalid_signature};
-    $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
+    $result = OIDC::Lite::Demo::Client::Web::C::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
     ok( $result->{header_content}, q{header is set});
@@ -134,7 +134,7 @@ _VALIDATE_GOOGLE_ID_TOKEN: {
 
     # invalid signature
     $id_token = q{eyJhbGciOiJSUzI1NiIsImtpZCI6IjU0MDQxOTZlMmQzOGNjYTA2MWJjNTFhNTVhMDRiYzI0YzE2MTIxODQifQ.eyJmb28iOiJiYXIifQ.invalid_signature};
-    $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
+    $result = OIDC::Lite::Demo::Client::Web::C::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( !$result->{signature_status}, q{signature status is invalid});
     ok( $result->{header_content}, q{header is set});
@@ -142,7 +142,7 @@ _VALIDATE_GOOGLE_ID_TOKEN: {
 
     # valid signature
     $id_token = q{eyJhbGciOiJSUzI1NiIsImtpZCI6IjA3ZjZmZTQ0ZTMzMWQxNjFlMjM4YzA2ZmY3MjJiY2EyYzc5YjgyYjIifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXRfaGFzaCI6IjlsYnRlUlpoWmppVjQ0SU45Q3Y0eFEiLCJhdWQiOiIxMDU4NDIxMzE0OTY2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE0MTgxMzA4NzI1NzMwOTg1MjM3IiwiZW1haWwiOiJyaXRvdS4wNkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJhenAiOiIxMDU4NDIxMzE0OTY2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiaWF0IjoxMzc3Mjc2OTIzLCJleHAiOjEzNzcyODA4MjN9.VagTki3Ap29EDgrC38cmGtZeoZdPJjPH4f_475Nd2FVa84HQDkSrO4-3r-2sxco_Z8DWi_i-AlHLHC01JTmOg69inwAWQ2usPV9gkcNLt5PMKKc3TkfB5WM6R5lNz-H6NHVldVkV1GHKTBFoFs4lwyE83ko41EHdHKxmgj9L5cM};
-    $result = OIDC::Lite::Demo::Client::Controller::Google->_validate_google_id_token( $id_token );
+    $result = OIDC::Lite::Demo::Client::Web::C::Google->_validate_google_id_token( $id_token );
     ok( $result, q{result is returned});
     ok( $result->{signature_status}, q{signature status is valid});
     ok( $result->{payload_content}, q{payload});
