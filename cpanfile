@@ -13,7 +13,7 @@ requires 'Time::Piece'                    , '1.20';
 requires 'Teng'                           , '0.19';
 
 requires 'OAuth::Lite2'                   , '0.05';
-requires 'OIDC::Lite'                     , '0.03';
+requires 'OIDC::Lite'                     , '0.04';
 requires 'Crypt::OpenSSL::Random'         , '0';
 requires 'Crypt::OpenSSL::CA'             , '0';
 
