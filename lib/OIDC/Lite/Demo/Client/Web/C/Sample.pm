@@ -9,12 +9,6 @@ use OIDC::Lite::Client::WebServer;
 use OIDC::Lite::Model::IDToken;
 use JSON qw/encode_json decode_json/;
 
-my $config = {
-    'authorization_endpoint' => 'http://localhost:5001/authorize',
-    'token_endpoint' => 'http://localhost:5001/token',
-    'userinfo_endpoint' => 'http://localhost:5001/userinfo',
-};
-
 sub default {
     my ($self, $c) = @_;
     return $c->render('providers/sample/top.tt');
@@ -50,8 +44,8 @@ sub _client {
     return OIDC::Lite::Client::WebServer->new(
         id               => $sample_config->{'client_id'},
         secret           => $sample_config->{'client_secret'},
-        authorize_uri    => $config->{'authorization_endpoint'},
-        access_token_uri => $config->{'token_endpoint'},
+        authorize_uri    => $sample_config->{'authorization_endpoint'},
+        access_token_uri => $sample_config->{'token_endpoint'},
     );
 }
 
@@ -116,7 +110,7 @@ sub callback {
     };
 
     # get_user_info
-    my $userinfo_res = $self->_get_userinfo( $token->access_token );
+    my $userinfo_res = $self->_get_userinfo( $token->access_token, $sample_config );
     unless ($userinfo_res->is_success) {
         return $c->render('providers/sample/error.tt' => {
             message => q{Failed to get userinfo response},
@@ -124,7 +118,7 @@ sub callback {
             content => $userinfo_res->content,
         });
     }
-    $info->{'userinfo_endpoint'} = $config->{'userinfo_endpoint'};
+    $info->{'userinfo_endpoint'} = $sample_config->{'userinfo_endpoint'};
     $info->{'userinfo_request_header'} = $userinfo_res->request->header('Authorization');
     $info->{'userinfo_response'} = $userinfo_res->content;
 
@@ -135,9 +129,9 @@ sub callback {
 }
 
 sub _get_userinfo {
-    my ($self, $access_token) = @_;
+    my ($self, $access_token, $sample_config) = @_;
 
-    my $req = HTTP::Request->new( GET => $config->{'userinfo_endpoint'} );
+    my $req = HTTP::Request->new( GET => $sample_config->{'userinfo_endpoint'} );
     $req->header( Authorization => sprintf(q{Bearer %s}, $access_token) );
     return LWP::UserAgent->new->request($req);
 }

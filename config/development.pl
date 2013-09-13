@@ -17,6 +17,9 @@ my $dbpath = File::Spec->catfile($basedir, 'db', 'oidc_lite_demo_client_developm
             'scope' => q{openid email profile},
         },
         'Sample' => {
+            'authorization_endpoint' => 'http://localhost:5001/authorize',
+            'token_endpoint' => 'http://localhost:5001/token',
+            'userinfo_endpoint' => 'http://localhost:5001/userinfo',
             'client_id' => q{sample_client_id},
             'client_secret' => q{sample_client_secret},
             'redirect_uri' => q{http://localhost:5000/sample/callback},

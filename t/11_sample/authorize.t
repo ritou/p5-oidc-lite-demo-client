@@ -20,6 +20,9 @@ _AUTHORIZE: {
             return {
                 'Credentials' => {
                     'Sample' => {
+                        'authorization_endpoint' => 'http://localhost:5001/authorize',
+                        'token_endpoint' => 'http://localhost:5001/token',
+                        'userinfo_endpoint' => 'http://localhost:5001/userinfo',
                         'client_id' => q{aaa},
                         'client_secret' => q{bbb},
                         'redirect_uri' => q{http://localhost:5000/sample/callback},
