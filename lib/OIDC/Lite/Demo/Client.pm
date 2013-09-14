@@ -81,9 +81,9 @@ For setup, please run the following command.
     # 3. Run your demo client
     $ carton exec -- plackup -r
 
-When plack is launched, try to access http://localhost:5000/
+When plack is launched, try to access http://(hostname or ipaddr:5000)/
 If OIDC::Lite::Demo::Server is installed and run server, you are able to use 
-sample client at http://localhost:5000/sample
+sample client at http://(hostname or ipaddr:5000)/sample
 
 =head1 AUTHOR
 
