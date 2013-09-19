@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use Amon2::Web::Dispatcher::Lite;
 # Servers
+use OIDC::Lite::Demo::Client::Web::C::IDIT;
 use OIDC::Lite::Demo::Client::Web::C::Sample;
 use OIDC::Lite::Demo::Client::Web::C::Google;
 
@@ -11,6 +12,22 @@ use OIDC::Lite::Demo::Client::Web::C::Google;
 any '/' => sub {
     my ($c) = @_;
     return $c->render('index.tt');
+};
+
+# Sample client for ID&IT 2013 Hands On
+get '/idit2013' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::IDIT->default($c)
+};
+
+get '/idit2013/authorize' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::IDIT->authorize($c)
+};
+
+get '/idit2013/callback' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::IDIT->callback($c)
 };
 
 # Sample client for OIDC::Lite::Demo::Server

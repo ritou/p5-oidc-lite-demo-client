@@ -1,0 +1,32 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/idit2013/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Success</h2>
+    <h3>Access Token Response</h3>
+    <div>
+        <pre>Request Body : [% info.token_request %]</pre>
+        <pre>Response Content : [% info.token_response %]</pre>
+    </div>
+    <h3>ID Token Detail</h3>
+    <div>
+        <pre>header : [% info.id_token.header %]</pre>
+        <pre>payload : [% info.id_token.payload %]</pre>
+    </div>
+    <h3>Userinfo Response</h3>
+    <div>
+        <pre>Endpoint : [% info.userinfo_endpoint %]</pre>
+        <pre>Request (Authorization Header) : [% info.userinfo_request_header %]</pre>
+        <pre>Content : [% info.userinfo_response %]</pre>
+    </div>
+    <div>
+        <p><a href="/idit2013">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

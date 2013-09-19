@@ -25,5 +25,14 @@ my $dbpath = File::Spec->catfile($basedir, 'db', 'oidc_lite_demo_client_developm
             'redirect_uri' => q{http://localhost:5000/sample/callback},
             'scope' => q{openid email profile phone address},
         },
+        'IDIT' => {
+            'authorization_endpoint' => 'https://oidp.pf-demo-jp.com/as/authorization.oauth2',
+            'token_endpoint' => 'https://oidp.pf-demo-jp.com/as/token.oauth2',
+            'userinfo_endpoint' => 'https://oidp.pf-demo-jp.com/idp/userinfo.openid',
+            'client_id' => q{your app's client_id},
+            'client_secret' => q{your app's client_secret},
+            'redirect_uri' => q{http://localhost:5000/idit2013/callback},
+            'scope' => q{openid email profile},
+        },
     },
 };
