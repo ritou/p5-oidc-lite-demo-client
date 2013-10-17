@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <script src="[% uri_for('/static/js/jquery-1.10.0.min.js') %]"></script>
+    <script src="[% uri_for('/static/js/purl.js') %]"></script>
     <link href="[% uri_for('/static/bootstrap/css/bootstrap.css') %]" rel="stylesheet" type="text/css" />
     <script src="[% uri_for('/static/bootstrap/js/bootstrap.js') %]"></script>
     <script src="[% uri_for('/static/js/es5-shim.min.js') %]"></script>

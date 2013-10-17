@@ -6,6 +6,7 @@ use Amon2::Web::Dispatcher::Lite;
 # Servers
 use OIDC::Lite::Demo::Client::Web::C::Sample;
 use OIDC::Lite::Demo::Client::Web::C::Google;
+use OIDC::Lite::Demo::Client::Web::C::Microsoft;
 
 # top
 any '/' => sub {
@@ -16,39 +17,60 @@ any '/' => sub {
 # Sample client for OIDC::Lite::Demo::Server
 get '/sample' => sub {
     my ($c) = @_;
-    return OIDC::Lite::Demo::Client::Web::C::Sample->default($c)
+    return OIDC::Lite::Demo::Client::Web::C::Sample->default($c);
 };
 
 get '/sample/authorize' => sub {
     my ($c) = @_;
-    return OIDC::Lite::Demo::Client::Web::C::Sample->authorize($c)
+    return OIDC::Lite::Demo::Client::Web::C::Sample->authorize($c);
 };
 
 get '/sample/callback' => sub {
     my ($c) = @_;
-    return OIDC::Lite::Demo::Client::Web::C::Sample->callback($c)
+    return OIDC::Lite::Demo::Client::Web::C::Sample->callback($c);
 };
 
 # Google demo client
 get '/google' => sub {
     my ($c) = @_;
-    return OIDC::Lite::Demo::Client::Web::C::Google->default($c)
+    return OIDC::Lite::Demo::Client::Web::C::Google->default($c);
 };
 
 get '/google/authorize' => sub {
     my ($c) = @_;
-    return OIDC::Lite::Demo::Client::Web::C::Google->authorize($c)
+    return OIDC::Lite::Demo::Client::Web::C::Google->authorize($c);
 };
 
 get '/google/callback' => sub {
     my ($c) = @_;
-    return OIDC::Lite::Demo::Client::Web::C::Google->callback($c)
+    return OIDC::Lite::Demo::Client::Web::C::Google->callback($c);
 };
 
 # Google id_token validator
 any '/google/id_token' => sub {
     my ($c) = @_;
-    return OIDC::Lite::Demo::Client::Web::C::Google->id_token($c)
+    return OIDC::Lite::Demo::Client::Web::C::Google->id_token($c);
+};
+
+# Microsoft demo client
+get '/microsoft' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Microsoft->default($c);
+};
+
+get '/microsoft/authorize' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Microsoft->authorize($c);
+};
+
+get '/microsoft/callback' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Microsoft->relay($c);
+};
+
+post '/microsoft/finish' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Microsoft->callback($c);
 };
 
 1;

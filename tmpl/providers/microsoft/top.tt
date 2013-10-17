@@ -1,0 +1,22 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/microsoft/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Contents</h2>
+    <div>
+        <ul>
+        <li><a href="/microsoft/authorize">Try Authorization Flow(response_type=code)</a></li>
+        <li><a href="/microsoft/authorize?mode=id_token">Try Authorization Flow(response_type=id_token)</a></li>
+        </ul>
+    </div>
+    <div>
+        <p><a href="/">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

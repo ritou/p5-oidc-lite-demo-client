@@ -1,0 +1,43 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/microsoft/include/header.tt" %]
+
+<hr />
+
+<div>
+Processing Authorization Response...
+</div>
+
+<hr />
+<form action="./finish" method="POST" name="finish_form" id="finish_form">
+<input type="hidden" name="state" id="state" value="" />
+<input type="hidden" name="code" id="code" value="" />
+<input type="hidden" name="session_state" id="session_state" value="" />
+<input type="hidden" name="id_token" id="id_token" value="" />
+</form>
+
+<script type="text/javascript">
+(function() {
+    var uri = $.url();
+    var finish_url = "./finish";
+
+    if ( uri.param('state') ) {
+        $('#state').val(uri.param('state'));
+        $('#code').val(uri.param('code'));
+        $('#session_state').val(uri.param('session_state'));
+        $('#finish_form').submit();
+    }
+
+    if ( uri.fparam('state') ) {
+        $('#state').val(uri.fparam('state'));
+        $('#code').val(uri.fparam('code'));
+        $('#id_token').val(uri.fparam('id_token'));
+        $('#session_state').val(uri.fparam('session_state'));
+        $('#finish_form').submit();
+    }
+
+    // redirect
+    location.href="../microsoft";
+})();
+</script>
+[% END %]

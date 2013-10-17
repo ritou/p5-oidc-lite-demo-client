@@ -25,5 +25,14 @@ my $dbpath = File::Spec->catfile($basedir, 'db', 'oidc_lite_demo_client_developm
             'redirect_uri' => q{http://localhost:5000/sample/callback},
             'scope' => q{openid email profile phone address},
         },
+        'Microsoft' => {
+            'authorization_endpoint' => 'https://login.windows.net/b4ea3de6-839e-4ad1-ae78-c78e5c0cdc06/oauth2/authorize',
+            'token_endpoint' => 'https://login.windows.net/b4ea3de6-839e-4ad1-ae78-c78e5c0cdc06/oauth2/token',
+            'userinfo_endpoint' => '',
+            'client_id' => q{sample_client_id},
+            'client_secret' => q{sample_client_secret},
+            'redirect_uri' => q{http://localhost:5000/microsoft/callback},
+            'scope' => q{openid},
+        },
     },
 };
