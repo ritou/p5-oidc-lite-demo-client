@@ -28,7 +28,7 @@ For setup, please run the following command.
     
 
     # 3. Run your demo client
-    $ carton exec -- plackup -r
+    $ carton exec -- plackup -r -R config
 
 When plack is launched, try to access http://localhost:5000/
 If OIDC::Lite::Demo::Server is installed and run server, you are able to use 
