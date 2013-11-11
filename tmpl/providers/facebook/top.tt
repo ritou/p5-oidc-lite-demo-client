@@ -1,0 +1,22 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/facebook/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Contents</h2>
+    <div>
+        <ul>
+        <li><a href="/facebook/authorize">Try Authorization Flow</a></li>
+        <!-- <li><a href="/facebook/id_token">ID Token Validator</a></li> -->
+        </ul>
+    </div>
+    <div>
+        <p><a href="/">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

@@ -1,0 +1,110 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/facebook/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>ID Token Validator</h2>
+    <div>
+        <form class="form-horizontal" method="POST" action="/facebook/id_token">
+        <fieldset>
+        <label>Input ID Token for Google</label>
+        <input type="text" class="span8" id="id_token" name="id_token" placeholder="ID Token string (eyJ...)" value="[% id_token %]">
+        <button type="submit" class="btn btn-primary"> Validate </button>
+        </fieldset>
+        </form >
+    </div>
+    [% IF result %]
+    <h3>ID Token String</h3>
+    <div>
+        [% IF result.id_token_string %]
+        <pre>[% result.id_token_string %]</pre>
+        [% END %]
+    </div>
+    <h3>Detail</h3>
+    <div>
+        <p>About JSON Web Signature : <a href="https://datatracker.ietf.org/doc/draft-ietf-jose-json-web-signature/" target="doc">JWS Spec on IETF</a></p>
+        <p>About Validation of Google's ID Token : <a href="https://developers.google.com/accounts/docs/OAuth2Login?hl=ja#validatinganidtoken" target="doc">Validating an ID Token</a></p>
+        <fieldset>
+        <label>Signature Status</label>
+        [% IF result.signature_status %]
+        <pre>valid</pre>
+        [% ELSE %]
+        <pre>invalid</pre>
+        [% END %]
+        [% IF result.encoded_header %]
+        <label>Encoded JWS Header</label>
+        <pre>[% result.encoded_header %]</pre>
+        [% END %]
+        [% IF result.header_content %]
+        <label>JWS Header</label>
+        <pre>[% result.header_content %]</pre>
+        [% END %]
+        [% IF result.pubkey %]
+        <label>Public Key</label>
+        <pre>[% result.pubkey %]</pre>
+        [% END %]
+        [% IF result.encoded_payload %]
+        <label>Encoded JWS Payload</label>
+        <pre>[% result.encoded_payload %]</pre>
+        [% END %]
+        [% IF result.payload_content %]
+        <label>JWS Payload</label>
+        <pre>[% result.payload_content %]</pre>
+        [% END %]
+        [% IF result.signing_input %]
+        <label>JWS Signing Input</label>
+        <pre>[% result.signing_input %]</pre>
+        [% END %]
+        [% IF result.encoded_signature %]
+        <label>Encoded JWS Signature</label>
+        <pre>[% result.encoded_signature %]</pre>
+        [% END %]
+        </fieldset>
+    </div>
+    [% END %]
+    [% IF result.payload_detail %]
+    <h3>Payload</h3>
+    <div>
+        <fieldset>
+        <label>Payload Status</label>
+        [% IF result.payload_detail.status %]
+        <pre>valid</pre>
+        [% ELSE %]
+        <pre>invalid</pre>
+        <pre>[% result.payload_detail.message %]</pre>
+        [% END %]
+        [% IF result.payload_detail.iss %]
+        <label>iss</label>
+        <pre>[% result.payload_detail.iss %]</pre>
+        [% END %]
+        [% IF result.payload_detail.iat %]
+        <label>iat</label>
+        <pre>[% result.payload_detail.iat %]</pre>
+        current timestamp is [% result.payload_detail.current %]
+        [% END %]
+        [% IF result.payload_detail.exp %]
+        <label>exp</label>
+        <pre>[% result.payload_detail.exp %]</pre>
+        [% END %]
+        [% IF result.payload_detail.aud %]
+        <label>aud</label>
+        <pre>[% result.payload_detail.aud %]</pre>
+        This app's client_id is [% result.payload_detail.client_id %]
+        [% END %]
+        [% IF result.payload_detail.userinfo %]
+        <label>User Info</label>
+        <pre>[% result.payload_detail.userinfo %]</pre>
+        [% END %]
+        </fieldset>
+    </div>
+    [% END %]
+    <div>
+        <p><a href="/">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]
