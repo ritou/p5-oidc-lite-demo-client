@@ -8,11 +8,12 @@
     <h2>Select OpenID Provider</h2>
     <div>
         <ul>
+        <li><a href="/sample">OIDC::Lite::Demo::Server</a></li>
+        <li><a href="/mixi">mixi</a></li>
         <li><a href="/google">Google</a></li>
+        <li><a href="/yahoo_japan">Yahoo Japan YConnect</a></li>
         <li><a href="/facebook">Facebook</a></li>
         <li><a href="/microsoft">Microsoft</a></li>
-        <li><a href="/yahoo_japan">Yahoo Japan YConnect</a></li>
-        <li><a href="/sample">OIDC::Lite::Demo::Server</a></li>
         </ul>
     </div>
 </div>

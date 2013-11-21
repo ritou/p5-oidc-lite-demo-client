@@ -18,7 +18,8 @@ MYMETA.yml
 /OIDC-Lite-Demo-Client-*
 /.build
 /_build_params
-/config/development.pl.*
+config/development.pl
+config/development.pl.*
 cpanfile.snapshot
 !Build/
 !META.json

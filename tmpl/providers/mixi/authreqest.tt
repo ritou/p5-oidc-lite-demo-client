@@ -1,0 +1,41 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/mixi/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Authorization Request</h2>
+    <div>
+        <p>mixi Platform requires server_state parameter in the authorization request.</p>
+        <p>Client obtain server_state before sending user to authorization endpoint.</p>
+        <div>
+            <h3>Server State Request</h3>
+            <label>URI</label>
+            <pre>[% request_uri %]</pre>
+            <label>Request Content</label>
+            <pre>[% request_body %]</pre>
+            <label>Response Status</label>
+            <pre>[% code %]</pre>
+            <label>Response Content</label>
+            <pre>[% content %]</pre>
+        </div>
+    </div>
+    [% IF authorization_request %]
+    <div>
+        <div>
+            <h3>Authorization Request</h3>
+            <label>URI</label>
+            <pre>[% authorization_request %]</pre>
+            <p><a href="[% authorization_request %]">Redirect to Authorization Endpoint</a></p>
+        </div>
+    </div>
+    [% END %]
+    <div>
+        <p><a href="/mixi">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

@@ -9,6 +9,7 @@ use OIDC::Lite::Demo::Client::Web::C::Google;
 use OIDC::Lite::Demo::Client::Web::C::Facebook;
 use OIDC::Lite::Demo::Client::Web::C::Microsoft;
 use OIDC::Lite::Demo::Client::Web::C::YahooJapan;
+use OIDC::Lite::Demo::Client::Web::C::Mixi;
 
 # top
 any '/' => sub {
@@ -96,7 +97,6 @@ any '/microsoft/id_token' => sub {
     return OIDC::Lite::Demo::Client::Web::C::Microsoft->id_token($c)
 };
 
-
 # Yahoo Japan demo client
 get '/yahoo_japan' => sub {
     my ($c) = @_;
@@ -117,6 +117,28 @@ get '/yahoo_japan/callback' => sub {
 any '/yahoo_japan/id_token' => sub {
     my ($c) = @_;
     return OIDC::Lite::Demo::Client::Web::C::YahooJapan->id_token($c)
+};
+
+# mixi demo client
+get '/mixi' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Mixi->default($c)
+};
+
+get '/mixi/authorize' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Mixi->authorize($c)
+};
+
+get '/mixi/callback' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Mixi->callback($c)
+};
+
+# mixi id_token validator
+any '/mixi/id_token' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Mixi->id_token($c)
 };
 
 1;

@@ -21,4 +21,14 @@ sub set_state {
     $session->set('state_'.$provider, $state);
 }
 
+sub get_server_state {
+    my ($self, $session, $provider) = @_;
+    return $session->get('server_state_'.$provider) || '';
+}
+
+sub set_server_state {
+    my ($self, $session, $provider, $state) = @_;
+    $session->set('server_state_'.$provider, $state);
+}
+
 1;

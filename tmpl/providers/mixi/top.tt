@@ -1,0 +1,22 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/mixi/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Contents</h2>
+    <div>
+        <ul>
+        <li><a href="/mixi/authorize">Try Authorization Flow</a></li>
+        <li><a href="/mixi/id_token">ID Token Validator</a></li>
+        </ul>
+    </div>
+    <div>
+        <p><a href="/">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

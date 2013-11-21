@@ -1,0 +1,29 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/mixi/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Error</h2>
+    <div>
+        <p>[% message %]</p>
+        [% IF code %]
+            <label>URI</label>
+            <pre>[% request_uri %]</pre>
+            <label>Request Content</label>
+            <pre>[% request_body %]</pre>
+            <label>Response Status</label>
+            <pre>[% code %]</pre>
+            <label>Response Content</label>
+            <pre>[% content %]</pre>
+        [% END %]
+    </div>
+    <div>
+        <p><a href="/mixi">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]
