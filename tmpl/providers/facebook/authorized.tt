@@ -1,0 +1,41 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/facebook/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Success</h2>
+    <h3>Access Token Response</h3>
+    <div>
+        <pre>Request Body : [% info.token_request %]</pre>
+        <pre>Response Content : [% info.token_response %]</pre>
+    </div>
+
+    <!--
+    <h3>ID Token Detail</h3>
+    <div>
+        <pre>header : [% info.id_token.header %]</pre>
+        <pre>payload : [% info.id_token.payload %]</pre>
+        If you want to know more detail, 
+        <form method="POST" action="/facebook/id_token">
+        <input type="hidden" name="id_token", id="id_token" value="[% info.id_token.string %]">
+        <button type="submit" class="btn btn-primary"> Validate this ID Token</button>
+        </form>
+    </div>
+    -->
+  
+    <h3>Userinfo Response</h3>
+    <div>
+        <pre>Endpoint : [% info.userinfo_endpoint %]</pre>
+        <pre>Request (Authorization Header) : [% info.userinfo_request_header %]</pre>
+        <pre>Content : [% info.userinfo_response %]</pre>
+    </div>
+    <div>
+        <p><a href="/facebook">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]
