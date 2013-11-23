@@ -1,0 +1,24 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/microsoft/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Error</h2>
+    <div>
+        <p>[% message %]</p>
+        [% IF code %]
+            <pre>Request Body : [% request %]</pre>
+            <pre>Status Code : [% code %]</pre>
+            <pre>Response Content : [% content %]</pre>
+        [% END %]
+    </div>
+    <div>
+        <p><a href="/microsoft">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]

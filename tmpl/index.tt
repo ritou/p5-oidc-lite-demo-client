@@ -9,6 +9,8 @@
     <div>
         <ul>
         <li><a href="/google">Google</a></li>
+        <li><a href="/facebook">Facebook</a></li>
+        <li><a href="/microsoft">Microsoft</a></li>
         <li><a href="/sample">OIDC::Lite::Demo::Server</a></li>
         </ul>
     </div>
