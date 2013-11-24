@@ -1,6 +1,6 @@
 [% WRAPPER 'include/layout.tt' %]
 
-[% INCLUDE "providers/microsoft/include/header.tt" %]
+[% INCLUDE "providers/yahoo_japan/include/header.tt" %]
 
 <hr />
 
@@ -11,20 +11,20 @@
         <pre>Request Body : [% info.token_request %]</pre>
         <pre>Response Content : [% info.token_response %]</pre>
     </div>
+
+    <!--
     <h3>ID Token Detail</h3>
     <div>
         <pre>header : [% info.id_token.header %]</pre>
         <pre>payload : [% info.id_token.payload %]</pre>
-
-        <!--
         If you want to know more detail, 
-        <form method="POST" action="/microsoft/id_token">
+        <form method="POST" action="/yahoo_japan/id_token">
         <input type="hidden" name="id_token" id="id_token" value="[% info.id_token.string %]">
         <button type="submit" class="btn btn-primary"> Validate this ID Token</button>
         </form>
-        -->
-
     </div>
+    -->
+
     <h3>Userinfo Response</h3>
     <div>
         <pre>Endpoint : [% info.userinfo_endpoint %]</pre>
@@ -32,7 +32,7 @@
         <pre>Content : [% info.userinfo_response %]</pre>
     </div>
     <div>
-        <p><a href="/microsoft">Back</a></p>
+        <p><a href="/yahoo_japan">Back</a></p>
     </div>
 </div>
 

@@ -1,0 +1,23 @@
+[% WRAPPER 'include/layout.tt' %]
+
+[% INCLUDE "providers/yahoo_japan/include/header.tt" %]
+
+<hr />
+
+<div>
+    <h2>Contents</h2>
+    <div>
+        <ul>
+        <li><a href="/yahoo_japan/authorize">Try Authorization Flow</a></li>
+        <!-- <li><a href="/yahoo_japan/id_token">ID Token Validator</a></li> -->
+        <li><a href="http://developer.yahoo.co.jp/yconnect/">Documentation</a></li>
+        </ul>
+    </div>
+    <div>
+        <p><a href="/">Back</a></p>
+    </div>
+</div>
+
+<hr />
+
+[% END %]
