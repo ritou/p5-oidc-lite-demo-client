@@ -19,9 +19,16 @@ my $dbpath = File::Spec->catfile($basedir, 'db', 'oidc_lite_demo_client_developm
 
         'Facebook' => {
             'redirect_uri' => q{http://localhost:5000/facebook/callback},
-            'client_id' => q{ccccc},
-            'client_secret' => q{dddddd},
-            'scope' => q{ email },
+            'client_id' => q{aaa},
+            'client_secret' => q{bbb},
+            'scope' => q{email},
+        },
+
+        'Microsoft' => {
+            'redirect_uri' => q{http://localhost:5000/microsoft/callback},
+            'client_id' => q{aaa},
+            'client_secret' => q{bbb},
+            'scope' => q{wl.signin wl.basic wl.emails},
         },
 
         'Sample' => {

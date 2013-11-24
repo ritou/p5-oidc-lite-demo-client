@@ -1,5 +1,6 @@
-requires 'Amon2', '3.87';
-requires 'Text::Xslate', '1.6001';
+requires 'Amon2'                          , '3.87';
+requires 'Router::Simple::Sinatraish'     , '0.03';
+requires 'Text::Xslate'                   , '1.6001';
 requires 'Amon2::DBI'                     , '0.30';
 requires 'DBD::SQLite'                    , '1.33';
 requires 'HTML::FillInForm::Lite'         , '1.11';

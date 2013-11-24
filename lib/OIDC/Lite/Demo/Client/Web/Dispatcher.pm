@@ -7,6 +7,7 @@ use Amon2::Web::Dispatcher::Lite;
 use OIDC::Lite::Demo::Client::Web::C::Sample;
 use OIDC::Lite::Demo::Client::Web::C::Google;
 use OIDC::Lite::Demo::Client::Web::C::Facebook;
+use OIDC::Lite::Demo::Client::Web::C::Microsoft;
 
 # top
 any '/' => sub {
@@ -69,6 +70,29 @@ get '/facebook/authorize' => sub {
 get '/facebook/callback' => sub {
     my ($c) = @_;
     return OIDC::Lite::Demo::Client::Web::C::Facebook->callback($c)
+};
+
+
+# Microsoft demo client
+get '/microsoft' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Microsoft->default($c)
+};
+
+get '/microsoft/authorize' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Microsoft->authorize($c)
+};
+
+get '/microsoft/callback' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Microsoft->callback($c)
+};
+
+# Microsoft id_token validator
+any '/microsoft/id_token' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::Microsoft->id_token($c)
 };
 
 
