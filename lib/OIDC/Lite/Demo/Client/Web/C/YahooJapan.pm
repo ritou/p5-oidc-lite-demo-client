@@ -14,7 +14,7 @@ use JSON qw/encode_json decode_json/;
 use Crypt::OpenSSL::CA;
 
 # XXX Where's their cert?
-my $MICROSOFT_CERTS_URL = q{https://aps.live.net/oauth2/v1/certs};
+my $YAHOO_JAPAN_CERTS_URL = q{};
 
 
 my $config = {
