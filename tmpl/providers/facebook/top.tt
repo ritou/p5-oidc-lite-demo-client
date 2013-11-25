@@ -10,6 +10,7 @@
         <ul>
         <li><a href="/facebook/authorize">Try Authorization Flow</a></li>
         <!-- <li><a href="/facebook/id_token">ID Token Validator</a></li> -->
+        <li><a href="https://developers.facebook.com/docs/facebook-login/">Documentation</a></li>
         </ul>
     </div>
     <div>

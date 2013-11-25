@@ -10,6 +10,7 @@
         <ul>
         <li><a href="/google/authorize">Try Authorization Flow</a></li>
         <li><a href="/google/id_token">ID Token Validator</a></li>
+        <li><a href="https://developers.google.com/accounts/cookbook/technologies/OpenID-Connect">Documentation</a></li>
         </ul>
     </div>
     <div>

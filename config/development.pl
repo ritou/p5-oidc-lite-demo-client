@@ -31,6 +31,14 @@ my $dbpath = File::Spec->catfile($basedir, 'db', 'oidc_lite_demo_client_developm
             'scope' => q{wl.signin wl.basic wl.emails},
         },
 
+
+        'YahooJapan' => {
+            'redirect_uri' => q{http://localhost:5000/yahoo_japan/callback},
+            'client_id' => q{aaa},
+            'client_secret' => q{bbb},
+            'scope' => q{openid email profile address},
+        },
+
         'Sample' => {
             'authorization_endpoint' => 'http://localhost:5001/authorize',
             'token_endpoint' => 'http://localhost:5001/token',

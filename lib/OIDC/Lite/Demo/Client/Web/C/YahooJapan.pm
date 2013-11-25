@@ -1,10 +1,12 @@
-package OIDC::Lite::Demo::Client::Web::C::Microsoft;
+package OIDC::Lite::Demo::Client::Web::C::YahooJapan;
 
 use strict;
 use warnings;
 use utf8;
 
 use Carp;
+use URI;
+use URI::QueryParam;
 use OIDC::Lite::Demo::Client::Session;
 use OIDC::Lite::Client::WebServer;
 use OIDC::Lite::Model::IDToken;
@@ -12,40 +14,40 @@ use JSON qw/encode_json decode_json/;
 use Crypt::OpenSSL::CA;
 
 # XXX Where's their cert?
-my $MICROSOFT_CERTS_URL = q{https://aps.live.net/oauth2/v1/certs};
+my $YAHOO_JAPAN_CERTS_URL = q{};
 
 
 my $config = {
-    'authorization_endpoint' => 'https://login.live.com/oauth20_authorize.srf',
-    'token_endpoint' => 'https://login.live.com/oauth20_token.srf',
-    'userinfo_endpoint' => 'https://apis.live.net/v5.0/me',
+    'authorization_endpoint' => 'https://auth.login.yahoo.co.jp/yconnect/v1/authorization',
+    'token_endpoint' => 'https://auth.login.yahoo.co.jp/yconnect/v1/token',
+    'userinfo_endpoint' => 'https://userinfo.yahooapis.jp/yconnect/v1/attribute',
 };
 
 sub default {
     my ($self, $c) = @_;
-    return $c->render('providers/microsoft/top.tt');
+    return $c->render('providers/yahoo_japan/top.tt');
 }
 
 sub authorize {
     my ($self, $c) = @_;
 
     # generate and save state parameter to session
-    my $state = OIDC::Lite::Demo::Client::Session->generate_state($c->session, q{microsoft});
-    OIDC::Lite::Demo::Client::Session->set_state($c->session, q{microsoft}, $state);
+    my $state = OIDC::Lite::Demo::Client::Session->generate_state($c->session, q{yahoo_japan});
+    OIDC::Lite::Demo::Client::Session->set_state($c->session, q{yahoo_japan}, $state);
 
     # build authorize request URL
-    my $microsoft_config = $c->config->{'Credentials'}->{'Microsoft'};
-    my $uri = $self->_uri_to_microsoft_authorizatin_endpoint( $microsoft_config, $state );
+    my $yahoo_japan_config = $c->config->{'Credentials'}->{'YahooJapan'};
+    my $uri = $self->_uri_to_yahoo_japan_authorizatin_endpoint( $yahoo_japan_config, $state );
 
     return $c->redirect($uri);
 }
 
-sub _uri_to_microsoft_authorizatin_endpoint {
-    my ($self, $microsoft_config, $state) = @_;
+sub _uri_to_yahoo_japan_authorizatin_endpoint {
+    my ($self, $yahoo_japan_config, $state) = @_;
 
-    return $self->_client( $microsoft_config )->uri_to_redirect(
-        redirect_uri => $microsoft_config->{'redirect_uri'},
-        scope        => $microsoft_config->{'scope'},
+    return $self->_client( $yahoo_japan_config )->uri_to_redirect(
+        redirect_uri => $yahoo_japan_config->{'redirect_uri'},
+        scope        => $yahoo_japan_config->{'scope'},
         state        => $state,
         extra        => {
             access_type => q{offline},
@@ -54,11 +56,11 @@ sub _uri_to_microsoft_authorizatin_endpoint {
 }
 
 sub _client {
-    my ($self, $microsoft_config) = @_;
+    my ($self, $yahoo_japan_config) = @_;
 
     return OIDC::Lite::Client::WebServer->new(
-        id               => $microsoft_config->{'client_id'},
-        secret           => $microsoft_config->{'client_secret'},
+        id               => $yahoo_japan_config->{'client_id'},
+        secret           => $yahoo_japan_config->{'client_secret'},
         authorize_uri    => $config->{'authorization_endpoint'},
         access_token_uri => $config->{'token_endpoint'},
     );
@@ -72,11 +74,11 @@ sub callback {
     # state valdation
     my $state = $req->param('state');
     my $session_state = 
-        OIDC::Lite::Demo::Client::Session->get_state($c->session, q{microsoft});
+        OIDC::Lite::Demo::Client::Session->get_state($c->session, q{yahoo_japan});
 
     unless ($state && $session_state && $state eq $session_state) {
         # invalid state
-        return $c->render('providers/microsoft/error.tt' => {
+        return $c->render('providers/yahoo_japan/error.tt' => {
             message => q{The state parameter is missing or not matched with session.},
         });
     }
@@ -85,26 +87,27 @@ sub callback {
     my $code = $req->param('code');
     unless ($code) {
         # invalid state
-        return $c->render('providers/microsoft/error.tt' => {
+        return $c->render('providers/yahoo_japan/error.tt' => {
             message => q{The code parameter is missing.},
         });
     }
 
     # prepare access token request
-    my $microsoft_config = $c->config->{'Credentials'}->{'Microsoft'};
-    my $client = $self->_client( $microsoft_config );
+    my $yahoo_japan_config = $c->config->{'Credentials'}->{'YahooJapan'};
+    my $client = $self->_client( $yahoo_japan_config );
 
     # get_access_token
     my $token = $client->get_access_token(
-        code         => $code,
-        redirect_uri => $microsoft_config->{'redirect_uri'},
+        code             => $code,
+        redirect_uri     => $yahoo_japan_config->{'redirect_uri'},
+        use_basic_schema => 1,
     );
     my $res = $client->last_response;
     my $request_body = $res->request->content;
     $request_body =~ s/client_secret=[^\&]+/client_secret=(hidden)/;
 
     unless ($token) {
-        return $c->render('providers/microsoft/error.tt' => {
+        return $c->render('providers/yahoo_japan/error.tt' => {
             message => q{Failed to get access token response},
             code => $res->code,
             content => $res->content,
@@ -116,32 +119,23 @@ sub callback {
         token_response => $res->content,
     };
 
-    # ID Token validation
-    my $id_token = OIDC::Lite::Model::IDToken->load(
-        $token->{authentication_token}
-    ) or croak "failed to load ID Token from token string";
-
-    $info->{'id_token'} = {
-        header => encode_json( $id_token->header ),
-        payload => encode_json( $id_token->payload ),
-        string => $id_token->token_string,
-    };
+    my $access_token = $token->access_token or die "no access_token?!";
 
     # get_user_info
-    my $userinfo_res = $self->_get_userinfo( $token->access_token );
+    my $userinfo_res = $self->_get_userinfo( $access_token );
     unless ($userinfo_res->is_success) {
-        return $c->render('providers/microsoft/error.tt' => {
+        return $c->render('providers/yahoo_japan/error.tt' => {
             message => q{Failed to get userinfo response},
             code => $userinfo_res->code,
             content => $userinfo_res->content,
         });
     }
     $info->{'userinfo_endpoint'} = $config->{'userinfo_endpoint'};
-    $info->{'userinfo_request_header'} = $userinfo_res->request->as_string;
+    $info->{'userinfo_request_header'} = $userinfo_res->request->header('Authorization');
     $info->{'userinfo_response'} = $userinfo_res->content;
 
     # display result
-    return $c->render('providers/microsoft/authorized.tt' => {
+    return $c->render('providers/yahoo_japan/authorized.tt' => {
         info => $info,
     });
 }
@@ -150,17 +144,18 @@ sub _get_userinfo {
     my ($self, $access_token) = @_;
 
     my $uri = URI->new($config->{userinfo_endpoint})
-      or croak "unable to create uri from '$config->{userinfo_endpoint}'";
-    $uri->query_param(access_token => $access_token);
+      or die "unable to build uri from '$config->{userinfo_endpoint}'";
+    $uri->query_param(schema => 'openid');
 
     my $req = HTTP::Request->new( GET => $uri );
+    $req->header( Authorization => sprintf(q{Bearer %s}, $access_token) );
     return LWP::UserAgent->new->request($req);
 }
 
 sub id_token {
     my ($self, $c) = @_;
 
-    die "NOT IMPLEMENTED: Microsoft certificate URL not defined";
+    die "NOT IMPLEMENTED: Yahoo Japan certificate URL unknown";
 
     my $result;
     my $id_token;
@@ -168,24 +163,24 @@ sub id_token {
 
     if( $req->method eq q{POST} ) {
         $id_token = $req->param('id_token');
-        $result = $self->_validate_microsoft_id_token( $id_token );
+        $result = $self->_validate_yahoo_japan_id_token( $id_token );
     }
 
     # validate payload
     if ( $result->{payload} ) {
-        $result->{payload_detail} = $self->_validate_microsoft_id_token_payload( 
+        $result->{payload_detail} = $self->_validate_yahoo_japan_id_token_payload( 
                                         $result->{payload}, 
-                                        $c->config->{'Credentials'}->{'microsoft'}
+                                        $c->config->{'Credentials'}->{'yahoo_japan'}
                                     );
     }
 
-    return $c->render('providers/microsoft/id_token.tt' => {
+    return $c->render('providers/yahoo_japan/id_token.tt' => {
         id_token => $id_token,
         result => $result,
     });
 }
 
-sub _validate_microsoft_id_token {
+sub _validate_yahoo_japan_id_token {
     my ($self, $id_token_string) = @_;
 
     my $result = {
@@ -200,7 +195,7 @@ sub _validate_microsoft_id_token {
         ($result->{encoded_header}, $result->{encoded_payload}, $result->{encoded_signature}) = @$encoded;
         $result->{signing_input} = $result->{encoded_header}.'.'.$result->{encoded_payload};
 
-        # microsoft's ID Token has kid param in header.
+        # yahoo_japan's ID Token has kid param in header.
         return $result 
             unless (    $id_token->header->{alg} && 
                         $id_token->header->{alg} eq q{RS256} &&
@@ -208,7 +203,7 @@ sub _validate_microsoft_id_token {
         $result->{header_content} = encode_json( $id_token->header );
 
         # fetch pubkey and verify signature
-        my $key = $self->_get_microsoft_pub_key( $id_token->header->{kid} );
+        my $key = $self->_get_yahoo_japan_pub_key( $id_token->header->{kid} );
         return $result unless $key;
         $result->{pubkey} = $key;
         $id_token->key($key);
@@ -223,12 +218,12 @@ sub _validate_microsoft_id_token {
     return $result;
 }
 
-sub _get_microsoft_pub_key {
+sub _get_yahoo_japan_pub_key {
     my ( $self, $kid ) = @_;
     
     my $pub_key;
 
-    my $res = LWP::UserAgent->new->request(HTTP::Request->new( GET => $MICROSOFT_CERTS_URL ));
+    my $res = LWP::UserAgent->new->request(HTTP::Request->new( GET => $YAHOO_JAPAN_CERTS_URL ));
     return unless $res->is_success;
 
     my $certs;
@@ -245,7 +240,7 @@ sub _get_microsoft_pub_key {
     return $pub_key;
 }
 
-sub _validate_microsoft_id_token_payload {
+sub _validate_yahoo_japan_id_token_payload {
     my ( $self, $payload, $config ) = @_;
     my $detail = {
         status => 0,
@@ -257,8 +252,8 @@ sub _validate_microsoft_id_token_payload {
         $detail->{message} = q{iss does not exist};
         return $detail;
     }
-    unless ( $payload->{iss} eq q{accounts.microsoft.com} ) {
-        $detail->{message} = q{iss is not microsoft};
+    unless ( $payload->{iss} eq q{accounts.yahoo_japan.com} ) {
+        $detail->{message} = q{iss is not yahoo_japan};
         return $detail;
     }
 

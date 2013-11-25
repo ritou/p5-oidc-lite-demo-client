@@ -8,6 +8,7 @@ use OIDC::Lite::Demo::Client::Web::C::Sample;
 use OIDC::Lite::Demo::Client::Web::C::Google;
 use OIDC::Lite::Demo::Client::Web::C::Facebook;
 use OIDC::Lite::Demo::Client::Web::C::Microsoft;
+use OIDC::Lite::Demo::Client::Web::C::YahooJapan;
 
 # top
 any '/' => sub {
@@ -95,5 +96,27 @@ any '/microsoft/id_token' => sub {
     return OIDC::Lite::Demo::Client::Web::C::Microsoft->id_token($c)
 };
 
+
+# Yahoo Japan demo client
+get '/yahoo_japan' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::YahooJapan->default($c)
+};
+
+get '/yahoo_japan/authorize' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::YahooJapan->authorize($c)
+};
+
+get '/yahoo_japan/callback' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::YahooJapan->callback($c)
+};
+
+# YahooJapan id_token validator
+any '/yahoo_japan/id_token' => sub {
+    my ($c) = @_;
+    return OIDC::Lite::Demo::Client::Web::C::YahooJapan->id_token($c)
+};
 
 1;
