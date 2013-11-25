@@ -223,7 +223,7 @@ sub _get_yahoo_japan_pub_key {
     
     my $pub_key;
 
-    my $res = LWP::UserAgent->new->request(HTTP::Request->new( GET => $MICROSOFT_CERTS_URL ));
+    my $res = LWP::UserAgent->new->request(HTTP::Request->new( GET => $YAHOO_JAPAN_CERTS_URL ));
     return unless $res->is_success;
 
     my $certs;
