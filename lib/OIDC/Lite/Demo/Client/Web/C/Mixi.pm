@@ -137,7 +137,7 @@ sub callback {
         });
     }
     my $response_body = $res->content;
-    $response_body =~ s/"access_token":"[^\&]+"/"access_token":"(hidden)"/;
+    $response_body =~ s/"access_token":"[^\"]+"/"access_token":"(hidden)"/;
     my $info = {
         token_request_uri => $res->request->uri,
         token_request_body => $request_body,
