@@ -1,4 +1,5 @@
 requires 'Amon2'                          , '3.87';
+requires 'Amon2::Plugin::Web::CSRFDefender', '0';
 requires 'Router::Simple::Sinatraish'     , '0.03';
 requires 'Text::Xslate'                   , '1.6001';
 requires 'Amon2::DBI'                     , '0.30';
@@ -15,9 +16,13 @@ requires 'Teng'                           , '0.19';
 
 requires 'OAuth::Lite2'                   , '0.07';
 requires 'OIDC::Lite'                     , '0.06';
-requires 'Crypt::OpenSSL::Random'         , '0';
+requires 'Crypt::OpenSSL::Random'         , '0.10';
 requires 'Crypt::OpenSSL::CA'             , '0';
+requires 'Crypt::OpenSSL::RSA'            , '0';
+requires 'Crypt::OpenSSL::Bignum'         , '0';
 requires 'LWP::Protocol::https'           , '0';
+requires 'DBI'                            , '1.633';
+
 
 on 'configure' => sub {
    requires 'Module::Build', '0.38';
